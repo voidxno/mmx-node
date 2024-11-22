@@ -259,6 +259,9 @@ if(MSVC)
 	set_target_properties(mmx_pos PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS 1)
 	set_target_properties(mmx_db PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS 1)
 
+	set_source_files_properties(src/sha256_ni.cpp PROPERTIES COMPILE_FLAGS "/arch:AVX")
+	set_source_files_properties(src/sha256_ni_rec.cpp PROPERTIES COMPILE_FLAGS "/arch:AVX")
+
 	# Workaround for:
 	#	LNK1189: library limit of 65535 objects exceeded
 	#	D8040: error creating or communicating with child process
@@ -273,8 +276,8 @@ else()
 	
 	if(${CMAKE_HOST_SYSTEM_PROCESSOR} STREQUAL "x86_64")
 		message(STATUS "Enabling -mavx2 -msha")
-		set_source_files_properties(src/sha256_ni.cpp PROPERTIES COMPILE_FLAGS "-msse4.2 -msha")
-		set_source_files_properties(src/sha256_ni_rec.cpp PROPERTIES COMPILE_FLAGS "-msse4.2 -msha")
+		set_source_files_properties(src/sha256_ni.cpp PROPERTIES COMPILE_FLAGS "-mavx -msha")
+		set_source_files_properties(src/sha256_ni_rec.cpp PROPERTIES COMPILE_FLAGS "-mavx -msha")
 		set_source_files_properties(src/sha256_avx2.cpp PROPERTIES COMPILE_FLAGS "-mavx2")
 	endif()
 
